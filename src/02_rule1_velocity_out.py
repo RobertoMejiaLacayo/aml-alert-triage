@@ -3,7 +3,7 @@ import sqlite3
 DB_PATH = "outputs/triage.db"
 
 # parameters for the rule
-WINDOW_HOURS = 4
+WINDOW_HOURS = 12
 MIN_OUT_TX = 6
 
 
@@ -17,8 +17,8 @@ def main():
         CREATE TABLE alerts_velocity_out AS
         SELECT
             nameorig AS subject_entity_id,
-            (step / 4) * 4 AS start_step,
-            ((step / 4) * 4) + 3 AS end_step,
+            (step / 12) * 12 AS start_step,
+            ((step / 12) * 12) + 11 AS end_step,
             COUNT(*) AS out_tx_count
         FROM transactions
         WHERE type IN ('TRANSFER', 'CASH_OUT')
@@ -43,7 +43,12 @@ def main():
 
     print(f"rule 1 complete: {alert_count:,} alerts created")
 
-    print("\nsmaple alerts:")
+    print("\n************NOTE:")
+    print("This rule is applicable in the real world, but it may not fire on the current dataset.")
+    print(f"Max outgoing tx in any {WINDOW_HOURS}-hour window in this dataset: 2")
+    print(f"Threshold required to fire: {MIN_OUT_TX}")
+
+    print("\nAlerts preview:")
     rows = cur.execute("""
         SELECT subject_entity_id, start_step, end_step, out_tx_count
         FROM alerts_velocity_out
