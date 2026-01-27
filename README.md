@@ -1,4 +1,4 @@
-# AML Alert Triage (PaySim) — Signals → Cases → Daily Queue
+# AML Alert Triage — Signals → Cases → Daily Queue
 
 ## What this is
 A lightweight fraud/financial-crime triage pipeline built on PaySim:
